@@ -42,7 +42,7 @@
     <p id="result"></p>
     <input type="text" id="passwordField" readonly />
 
-    <div id="location"></div>
+    <button id="copyButton" onclick="copyPassword()">Kopiuj Hasło</button>
 
     <script>
         function generatePassword() {
@@ -60,36 +60,33 @@
             const passwordField = document.getElementById('passwordField');
             passwordField.value = ""; // Reset the password field
             let index = 0;
+            let animatedPassword = "";
 
             const interval = setInterval(() => {
                 if (index < password.length) {
-                    passwordField.value += password[index];
-                    index++;
+                    const randomChar = Math.floor(Math.random() * 62); // Przypadkowy znak z charsetu
+                    animatedPassword += charset[randomChar];
+                    passwordField.value = animatedPassword;
+
+                    if (index < password.length) {
+                        setTimeout(() => {
+                            animatedPassword = animatedPassword.slice(0, -1) + password[index];
+                            passwordField.value = animatedPassword;
+                            index++;
+                        }, 100); // Czas wyświetlania konkretnego znaku
+                    }
                 } else {
                     clearInterval(interval);
                 }
-            }, 500);
+            }, 200); // Czas zmiany znaku
         }
 
-        // Funkcja do uzyskania lokalizacji i temperatury
-        async function fetchLocationAndWeather() {
-            try {
-                const res = await fetch('https://ipapi.co/json/');
-                const data = await res.json();
-                const locationDiv = document.getElementById('location');
-                locationDiv.innerText = `Przybliżona lokalizacja: ${data.city}, ${data.region}, ${data.country}`;
-
-                const weatherRes = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${data.city}&appid=92f65237b7dcf8bbd9e1027b661d3d37&units=metric`);
-                const weatherData = await weatherRes.json();
-                const temperature = weatherData.main.temp;
-                locationDiv.innerText += ` | Temperatura: ${temperature}°C`;
-            } catch (error) {
-                console.error('Błąd podczas pobierania lokalizacji lub pogody:', error);
-            }
+        function copyPassword() {
+            const passwordField = document.getElementById('passwordField');
+            passwordField.select();
+            document.execCommand('copy');
+            alert('Hasło skopiowane do schowka!');
         }
-
-        // Wywołanie funkcji
-        fetchLocationAndWeather();
     </script>
 </body>
 </html>
