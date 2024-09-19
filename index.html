@@ -5,10 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generator Haseł</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #1c1c1c; color: white; padding: 20px; }
-        input, button, select { margin: 10px 0; }
-        button { background-color: green; color: white; border: none; padding: 10px; cursor: pointer; }
-        button:hover { background-color: darkgreen; }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1c1c1c;
+            color: white;
+            padding: 20px;
+            text-align: center; /* Wyśrodkowanie treści */
+        }
+        input, button, select {
+            margin: 10px 0;
+        }
+        button {
+            background-color: green;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: darkgreen;
+        }
+        #location {
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -19,9 +38,11 @@
         <option value="20">20</option>
         <option value="30">30</option>
     </select>
-    <button onclick="generatePassword()">Generuj Hasło</button>
+    <button onclick="generatePassword()">GENERUJ</button>
     <p id="result"></p>
     <input type="text" id="passwordField" readonly />
+
+    <div id="location"></div>
 
     <script>
         function generatePassword() {
@@ -49,6 +70,26 @@
                 }
             }, 500);
         }
+
+        // Funkcja do uzyskania lokalizacji i temperatury
+        async function fetchLocationAndWeather() {
+            try {
+                const res = await fetch('https://ipapi.co/json/');
+                const data = await res.json();
+                const locationDiv = document.getElementById('location');
+                locationDiv.innerText = `Przybliżona lokalizacja: ${data.city}, ${data.region}, ${data.country}`;
+
+                const weatherRes = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${data.city}&appid=92f65237b7dcf8bbd9e1027b661d3d37&units=metric`);
+                const weatherData = await weatherRes.json();
+                const temperature = weatherData.main.temp;
+                locationDiv.innerText += ` | Temperatura: ${temperature}°C`;
+            } catch (error) {
+                console.error('Błąd podczas pobierania lokalizacji lub pogody:', error);
+            }
+        }
+
+        // Wywołanie funkcji
+        fetchLocationAndWeather();
     </script>
 </body>
 </html>
