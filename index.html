@@ -6,15 +6,22 @@
     <title>Generator Haseł</title>
     <style>
         body { font-family: Arial, sans-serif; background-color: #1c1c1c; color: white; padding: 20px; }
-        input, button { margin: 10px 0; }
+        input, button, select { margin: 10px 0; }
+        button { background-color: green; color: white; border: none; padding: 10px; cursor: pointer; }
+        button:hover { background-color: darkgreen; }
     </style>
 </head>
 <body>
     <h1>Generator Haseł</h1>
     <label for="length">Długość hasła:</label>
-    <input type="number" id="length" value="12" min="1" max="128" />
+    <select id="length">
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="30">30</option>
+    </select>
     <button onclick="generatePassword()">Generuj Hasło</button>
     <p id="result"></p>
+    <input type="text" id="passwordField" readonly />
 
     <script>
         function generatePassword() {
@@ -25,7 +32,22 @@
                 const randomIndex = Math.floor(Math.random() * charset.length);
                 password += charset[randomIndex];
             }
-            document.getElementById('result').innerText = `Wygenerowane Hasło: ${password}`;
+            displayPassword(password);
+        }
+
+        function displayPassword(password) {
+            const passwordField = document.getElementById('passwordField');
+            passwordField.value = ""; // Reset the password field
+            let index = 0;
+
+            const interval = setInterval(() => {
+                if (index < password.length) {
+                    passwordField.value += password[index];
+                    index++;
+                } else {
+                    clearInterval(interval);
+                }
+            }, 500);
         }
     </script>
 </body>
