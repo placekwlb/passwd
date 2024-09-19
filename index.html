@@ -10,7 +10,7 @@
             background-color: #1c1c1c;
             color: white;
             padding: 20px;
-            text-align: center; /* Wyśrodkowanie treści */
+            text-align: center; 
         }
         input, button, select {
             margin: 10px 0;
@@ -45,9 +45,10 @@
     <button id="copyButton" onclick="copyPassword()">Kopiuj Hasło</button>
 
     <script>
+        const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+";
+
         function generatePassword() {
             const length = document.getElementById('length').value;
-            const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+";
             let password = "";
             for (let i = 0; i < length; i++) {
                 const randomIndex = Math.floor(Math.random() * charset.length);
@@ -58,27 +59,25 @@
 
         function displayPassword(password) {
             const passwordField = document.getElementById('passwordField');
-            passwordField.value = ""; // Reset the password field
+            passwordField.value = ""; 
             let index = 0;
             let animatedPassword = "";
 
             const interval = setInterval(() => {
                 if (index < password.length) {
-                    const randomChar = Math.floor(Math.random() * 62); // Przypadkowy znak z charsetu
+                    const randomChar = Math.floor(Math.random() * charset.length);
                     animatedPassword += charset[randomChar];
                     passwordField.value = animatedPassword;
 
-                    if (index < password.length) {
-                        setTimeout(() => {
-                            animatedPassword = animatedPassword.slice(0, -1) + password[index];
-                            passwordField.value = animatedPassword;
-                            index++;
-                        }, 100); // Czas wyświetlania konkretnego znaku
-                    }
+                    setTimeout(() => {
+                        animatedPassword = animatedPassword.slice(0, -1) + password[index];
+                        passwordField.value = animatedPassword;
+                        index++;
+                    }, 100); 
                 } else {
                     clearInterval(interval);
                 }
-            }, 200); // Czas zmiany znaku
+            }, 200); 
         }
 
         function copyPassword() {
