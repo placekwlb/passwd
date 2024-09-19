@@ -1,0 +1,41 @@
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #EC008C, #FC6767);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+    color: white;
+    padding: 20px;
+    text-align: center; 
+}
+
+input, button, select {
+    margin: 10px 0;
+}
+
+button {
+    background-color: green;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: darkgreen;
+}
+
+#location {
+    margin-top: 20px;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
